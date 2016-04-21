@@ -8,6 +8,9 @@ before_install:
 - gem --version
 - gem install bundler
 - bundle --version
+env:
+  global:
+  - secure: g0CJEgEqFbBAeNw4jian5FEWgtm0riOpaKr/MPBky0JpeWUPeRmROGq2qFDrHIuytiHBUd4e/Fh0PNAniSKqUJPne2xQpMNMwWz3jgAkiR02f0hIdbHuO6WIZ/eIZtCaOsz3uyP9FroubnAb5NjU0FK4vat1lhd6IE+ZoGUznV/JLstf6HEo4Qvb1KDG2uSGKJ9rY+IGUYaVLAXqalk/z7lwRx8r6vZaqY3n9qWic1QP1eVfsfMoVw/SZObywcaB30dLgR3ZNIXZCYMITo4YdKisIax6ZQJTrgZyrxfAeOOwEV/13uTwFfPpQoHKoiJ2xIEAwkwbnSFUhpwbg6vSs9ncW3H9tQScgYKW1TyibNtP8CGGOiTJCZSLbVzCj+4YNos2MSs/2Aju5OVzf+U+zMnOnBMur4WajrEZCM/3wpHdUaHKHzxsCjRlRtPOBtYCXMMf/NSkvQhgqJ5kiLRyastqNEK64D1PHMCAm0gOppgX/KASYunhX8FTnUUxjrnI8LL1sSSQ515dw/zte5cyMzgiKHxhDWXi1sxv6ZsRO46/R63I0EEQ8OdUsXilftf4UcdSkIC28VxEeZzLy3eJp578NR/wCU6ecb6HY5O6sjV6hRo8q0LBsi4Db9vOgwegJEEiBqgDwaQcW7hwC452MZaOQk9Oo8yycs/RnmrShFo=
 bundler_args: "--binstubs=$PWD/bin --jobs 3 --retry 3"
 script:
 - "./bin/rake travis"
