@@ -1,0 +1,10 @@
+---
+#<% require 'poise_boiler' %>
+<%= PoiseBoiler.kitchen(platforms: 'ubuntu-14.04') %>
+
+provisioner:
+  name: poise_policyfile_zero
+  policyfile: test/integration/default_policy.rb
+
+verifier:
+  name: inspec

@@ -1,0 +1,25 @@
+sudo: false
+cache: bundler
+language: ruby
+rvm:
+- '2.2'
+before_install:
+- if [[ $BUNDLE_GEMFILE == *master.gemfile ]]; then gem update --system; fi
+- gem --version
+- gem install bundler
+- bundle --version
+bundler_args: "--binstubs=$PWD/bin --jobs 3 --retry 3"
+script:
+- "./bin/rake travis"
+gemfile:
+- test/gemfiles/chef-12.gemfile
+- test/gemfiles/chef-12.0.gemfile
+- test/gemfiles/chef-12.1.gemfile
+- test/gemfiles/chef-12.2.gemfile
+- test/gemfiles/chef-12.3.gemfile
+- test/gemfiles/chef-12.4.gemfile
+- test/gemfiles/chef-12.5.gemfile
+- test/gemfiles/chef-12.6.gemfile
+- test/gemfiles/chef-12.7.gemfile
+- test/gemfiles/chef-12.8.gemfile
+- test/gemfiles/master.gemfile
