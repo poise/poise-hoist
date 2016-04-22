@@ -28,6 +28,19 @@ default['staging']['myapp']['debug_mode'] = true
 default['prod']['myapp']['debug_mode'] = false
 ```
 
+## Requirements
+
+Chef 12.2 or newer is required.
+
+## Use With Test Kitchen
+
+When testing policies with the `policyfile_zero` provisioner plugin, the policy
+group will always be `local`.
+
+```ruby
+default['local']['myapp']['debug_mode'] = true
+```
+
 ## Sponsors
 
 Development sponsored by [Bloomberg](http://www.bloomberg.com/company/technology/).
