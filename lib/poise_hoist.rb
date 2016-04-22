@@ -25,9 +25,10 @@ module PoiseHoist
 
   def self.hoist!(node)
     # Do nothing if we aren't using policies.
-    return unless node.policy_group
+    policy_group = defined?(node.policy_group) ? node.policy_group : Chef::Config[:policy_group]
+    return unless policy_group
     # Hoist away, mateys!
-    Chef::Mixin::DeepMerge.hash_only_merge!(node.role_default, node.role_default[node.policy_group]) if node.role_default.include?(node.policy_group)
-    Chef::Mixin::DeepMerge.hash_only_merge!(node.role_override, node.role_override[node.policy_group]) if node.role_override.include?(node.policy_group)
+    Chef::Mixin::DeepMerge.hash_only_merge!(node.role_default, node.role_default[policy_group]) if node.role_default.include?(policy_group)
+    Chef::Mixin::DeepMerge.hash_only_merge!(node.role_override, node.role_override[policy_group]) if node.role_override.include?(policy_group)
   end
 end

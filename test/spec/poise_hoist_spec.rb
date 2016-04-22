@@ -27,7 +27,12 @@ describe PoiseHoist do
     node.role_override.update(role_override_attributes)
     # Set a policy_group. Run this late so our node doesn't get created before
     # all before blocks get a chance to run.
-    node.policy_group = 'mygroup'
+    if defined?(node.policy_group)
+      node.policy_group = 'mygroup'
+    else
+      # Global side effect. ¯\_(ツ)_/¯
+      Chef::Config[:policy_group] = 'mygroup'
+    end
     # Run the hoist.
     PoiseHoist.hoist!(node)
     # Use the attributes as the subject.
