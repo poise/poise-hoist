@@ -14,6 +14,6 @@
 # limitations under the License.
 #
 
-file '/hoist_test' do
+describe file('/hoist_test') do
   its(:content) { is_expected.to eq '{"one":11,"two":222,"three":3}' }
 end
