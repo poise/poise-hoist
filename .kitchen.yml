@@ -5,3 +5,6 @@
 provisioner:
   name: poise_policyfile_zero
   policyfile: test/integration/default_policy.rb
+
+verifier:
+  name: inspec
