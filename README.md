@@ -41,6 +41,12 @@ group will always be `local`.
 default['local']['myapp']['debug_mode'] = true
 ```
 
+## Environment Shim
+
+For older cookbooks still expecting to use `node.chef_environment`, by default
+that method will be patched to return the policy group name instead. This can
+be disabled by setting `node['poise-hoist']['hoist_chef_environment'] = false`.
+
 ## Sponsors
 
 Development sponsored by [Bloomberg](http://www.bloomberg.com/company/technology/).
