@@ -126,4 +126,15 @@ describe PoiseHoist do
     its(%w{baseline deep four}) { is_expected.to eq [4] }
     its(%w{top}) { is_expected.to eq 'dog' }
   end # /context with a top-level override policy attribute
+
+  describe 'patch_chef_environment!' do
+    context 'with patching enabled (default)' do
+      it { subject; expect(chef_run.node.chef_environment).to eq 'mygroup' }
+    end # /context with patching enabled (default)
+
+    context 'with patching disabled' do
+      before { override_attributes['poise-hoist'] = {'hoist_chef_environment' => false} }
+      it { subject; expect(chef_run.node.chef_environment).to eq '_default' }
+    end # /context with patching disabled
+  end # /describe patch_chef_environment!
 end

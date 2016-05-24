@@ -14,5 +14,8 @@
 # limitations under the License.
 #
 
+# Enable node.chef_environment by default.
+default['poise-hoist']['hoist_chef_environment'] = true
+
 # If we weren't able to run it during library load, do it now.
 PoiseHoist.hoist!(node) unless defined?(Chef.node)
