@@ -18,6 +18,6 @@ describe file('/hoist_test') do
   its(:content) { is_expected.to eq '{"one":11,"two":222,"three":3}' }
 end
 
-describe file('/hoise_environment') do
+describe file('/hoist_environment') do
   its(:content) { is_expected.to eq 'default' }
 end

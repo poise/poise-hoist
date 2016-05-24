@@ -18,6 +18,6 @@ file '/hoist_test' do
   content node['hoist_test'].to_hash.to_json
 end
 
-file '/hoise_environment' do
+file '/hoist_environment' do
   content node.chef_environment
 end
