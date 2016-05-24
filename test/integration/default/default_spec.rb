@@ -19,5 +19,5 @@ describe file('/hoist_test') do
 end
 
 describe file('/hoist_environment') do
-  its(:content) { is_expected.to eq 'default' }
+  its(:content) { is_expected.to eq 'local' }
 end
