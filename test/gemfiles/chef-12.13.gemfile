@@ -16,6 +16,5 @@
 
 eval_gemfile File.expand_path('../../../Gemfile', __FILE__)
 
-gem 'chef', '~> 12.6.0'
-gem 'rack', '< 2'
+gem 'chef', '~> 12.13.37'
 gem 'foodcritic', '< 8'
