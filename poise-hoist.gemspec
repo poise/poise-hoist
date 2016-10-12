@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'chef', '~> 12.2'
   spec.add_dependency 'halite', '~> 1.0'
 
-  spec.add_development_dependency 'chef-dk', '~> 0.1'
+  spec.add_development_dependency 'chef-dk', '~> 0.10'
   spec.add_development_dependency 'kitchen-inspec', '~> 0.12'
   spec.add_development_dependency 'poise-boiler', '~> 1.8'
 end
