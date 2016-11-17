@@ -25,7 +25,7 @@ name 'myapp'
 run_list 'poise-hoist', 'myapp'
 
 # Default value for all groups.
-default['myapp']['debug_mode'] = false
+default['myapp']['debug_mode'] = true
 
 # Per-group values, will be hoisted on top of the default above.
 default['staging']['myapp']['debug_mode'] = 'extra_verbose'
