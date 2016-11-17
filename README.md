@@ -24,9 +24,24 @@ name 'myapp'
 
 run_list 'poise-hoist', 'myapp'
 
-default['staging']['myapp']['debug_mode'] = true
+# Default value for all groups.
+default['myapp']['debug_mode'] = false
+
+# Per-group values, will be hoisted on top of the default above.
+default['staging']['myapp']['debug_mode'] = 'extra_verbose'
 default['prod']['myapp']['debug_mode'] = false
 ```
+
+and then in your recipe code:
+
+```ruby
+some_resource 'name' do
+  debug_mode node['myapp']['debug_mode']
+end
+```
+
+This automatically hoists up policy attributes set under a top-level key
+matching the name of the policy group of the current node.
 
 ## Requirements
 
