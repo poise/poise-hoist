@@ -19,4 +19,5 @@ eval_gemfile File.expand_path('../../../Gemfile', __FILE__)
 gem 'chef', '~> 12.13.37'
 gem 'foodcritic', '< 8'
 gem 'chef-dk', '~> 0.17.0'
+gem 'mixlib-install', '>= 2'
 gem 'fauxhai', '<= 3.9.0'
