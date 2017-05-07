@@ -18,3 +18,4 @@ eval_gemfile File.expand_path('../../../Gemfile', __FILE__)
 
 gem 'chef', '~> 12.14.89'
 gem 'chef-dk', '~> 0.18.0'
+gem 'cheffish', '< 13'
