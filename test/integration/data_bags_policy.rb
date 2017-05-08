@@ -14,10 +14,13 @@
 # limitations under the License.
 #
 
-describe file('/hoist_test') do
-  its(:content) { is_expected.to eq '{"one":11,"two":222,"three":3,"four":4}' }
-end
+name 'default'
+run_list 'poise-profiler', 'poise-hoist_test'
 
-describe file('/hoist_environment') do
-  its(:content) { is_expected.to eq 'local' }
-end
+default['other']['hoist_test']['one'] = 100
+default['local']['hoist_test']['one'] = 11
+override['hoist_test']['two'] = 22
+override['other']['hoist_test']['two'] = 220
+override['local']['hoist_test']['two'] = 222
+
+default['poise-hoist']['data_bag'] = 'hoist'

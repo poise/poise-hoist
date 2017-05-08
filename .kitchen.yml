@@ -1,10 +1,21 @@
 ---
 #<% require 'poise_boiler' %>
-<%= PoiseBoiler.kitchen(platforms: 'ubuntu-14.04') %>
+<%= PoiseBoiler.kitchen(platforms: 'ubuntu-16.04') %>
 
 provisioner:
   name: poise_policyfile_zero
-  policyfile: test/integration/default_policy.rb
 
 verifier:
   name: inspec
+
+suites:
+- name: default
+  run_list:
+  - poise-hoist_test
+  provisioner:
+    policyfile: test/integration/default_policy.rb
+- name: data_bags
+  run_list:
+  - poise-hoist_test
+  provisioner:
+    policyfile: test/integration/data_bags_policy.rb

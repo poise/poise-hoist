@@ -64,9 +64,11 @@ be disabled by setting `node['poise-hoist']['hoist_chef_environment'] = false`.
 
 ## Data Bag Attributes
 
-To pull in data from a data bag, set `node['poise-hoist']['data_bag']` in your
-Policyfile or in a wrapper cookbook. It will look for an item in the specified
-data bag using the name of the node and then the name of policy group.
+To pull in data from a data bag, set `default['poise-hoist']['data_bag'] = 'the name of the data bag'`
+in your Policyfile. It will look for an item in the specified data bag using the
+name of the node and then the name of policy group. You can use this in
+combination with the normal group-level hoisting to have a different data bag
+name for some policy groups.
 
 This can be useful in combination with attributes from the Policyfile to provide
 immediate overrides outside of the "compile and push" cycle of the policy system.

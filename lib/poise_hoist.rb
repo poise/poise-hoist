@@ -40,8 +40,9 @@ module PoiseHoist
     # Hoist away, mateys!
     Chef::Mixin::DeepMerge.hash_only_merge!(node.role_default, node.role_default[policy_group]) if node.role_default.include?(policy_group)
     Chef::Mixin::DeepMerge.hash_only_merge!(node.role_override, node.role_override[policy_group]) if node.role_override.include?(policy_group)
-    # Grab from a data bag if one is configured.
-    hoist_from_data_bag!(node, policy_group, node['poise-hoist']['data_bag']) if node['poise-hoist']['data_bag']
+    # Grab from a data bag if one is configured. Remember this might run very
+    # early on newer Chef versions, before attribute loading.
+    hoist_from_data_bag!(node, policy_group, node['poise-hoist']['data_bag']) if node['poise-hoist'] && node['poise-hoist']['data_bag']
     # Install the patch for chef_environment.
     patch_chef_environment!(node, policy_group)
   end

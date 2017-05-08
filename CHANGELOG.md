@@ -1,5 +1,9 @@
 # Poise-Hoist Changelog
 
+## v1.2.1
+
+* Fix a logic error if you aren't using the data bag support.
+
 ## v1.2.0
 
 * Support for reading attributes from data bags when configured via `node['poise-hoist']['data_bag']`.

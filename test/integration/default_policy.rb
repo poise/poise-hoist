@@ -22,5 +22,3 @@ default['local']['hoist_test']['one'] = 11
 override['hoist_test']['two'] = 22
 override['other']['hoist_test']['two'] = 220
 override['local']['hoist_test']['two'] = 222
-
-default['poise-hoist']['data_bag'] = 'hoist'
