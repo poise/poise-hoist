@@ -1,0 +1,6 @@
+{
+  "id": "local",
+  "hoist_test": {
+    "four": 44
+  }
+}

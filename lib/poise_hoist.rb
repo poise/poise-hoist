@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 
+require 'chef/encrypted_data_bag_item/check_encrypted'
 require 'chef/mixin/deep_merge'
 
 
@@ -21,6 +22,8 @@ require 'chef/mixin/deep_merge'
 #
 # @since 1.0.0
 module PoiseHoist
+  extend Chef::EncryptedDataBagItem::CheckEncrypted
+
   autoload :VERSION, 'poise_hoist/version'
 
   # Run the attribute hoist process.
@@ -37,8 +40,56 @@ module PoiseHoist
     # Hoist away, mateys!
     Chef::Mixin::DeepMerge.hash_only_merge!(node.role_default, node.role_default[policy_group]) if node.role_default.include?(policy_group)
     Chef::Mixin::DeepMerge.hash_only_merge!(node.role_override, node.role_override[policy_group]) if node.role_override.include?(policy_group)
+    # Grab from a data bag if one is configured.
+    hoist_from_data_bag!(node, policy_group, node['poise-hoist']['data_bag']) if node['poise-hoist']['data_bag']
     # Install the patch for chef_environment.
     patch_chef_environment!(node, policy_group)
+  end
+
+  # Pull attribute data in from a data bag. Checks for an item matching the
+  # node node, and then the policy group.
+  #
+  # @api private
+  # @param node [Chef::Node] Node object to modify.
+  # @param policy_group [String] Policy group name.
+  # @param data_bag [String] Data bag name to load from.
+  # @return [void]
+  def self.hoist_from_data_bag!(node, policy_group, data_bag)
+    item = begin
+      data_bag_item(data_bag, node.name)
+    rescue Exception
+      data_bag_item(data_bag, policy_group)
+    end
+    Chef::Mixin::DeepMerge.hash_only_merge!(node.role_override, item)
+  end
+
+  # A copy of Chef's data_bag_item method, modified to remove some spurious
+  # error logging and returns a plain hash without the `id` field instead of
+  # one of the data bag item objects.
+  #
+  # @api private
+  # @param bag [String] Data bag name.
+  # @param item [String] Data bag item name.
+  # @param secret [String, nil] Data bag secret.
+  # @return [Hash]
+  def self.data_bag_item(bag, item, secret = nil)
+    Chef::DataBag.validate_name!(bag.to_s)
+    Chef::DataBagItem.validate_id!(item)
+
+    item = Chef::DataBagItem.load(bag, item)
+    data = if encrypted?(item.raw_data)
+      Chef::Log.debug("Data bag item looks encrypted: #{bag.inspect} #{item.inspect}")
+
+      # Try to load the data bag item secret, if secret is not provided.
+      # Chef::EncryptedDataBagItem.load_secret may throw a variety of errors.
+      secret ||= Chef::EncryptedDataBagItem.load_secret
+      Chef::EncryptedDataBagItem.new(item.raw_data, secret).to_hash
+    else
+      item.raw_data
+    end
+    data.delete('id')
+
+    data
   end
 
   # Patch `node.chef_environment` to return the policy group name if enabled

@@ -1,0 +1,10 @@
+{
+  "id": "encrypted-node",
+  "baseline": {
+    "encrypted_data": "V+YNyaskOPd0c0q5GJv9ogtfQahQQz5GJssGoFfjDObbGtgHDYvnNv46AsMn\nlXPVIYfGiZdBDp9aOJUsPY/WRce2\n",
+    "iv": "s1q5jNccDFIj8AI0\n",
+    "auth_tag": "IgKp1wRq9sCQXb8konivDA==\n",
+    "version": 3,
+    "cipher": "aes-256-gcm"
+  }
+}

@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Name for attribute data bag. Defaults to nil, meaning the feature is disabled.
+default['poise-hoist']['data_bag'] = nil
+
 # Enable node.chef_environment by default.
 default['poise-hoist']['hoist_chef_environment'] = true
 

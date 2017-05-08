@@ -21,18 +21,19 @@ describe PoiseHoist do
   let(:role_default_attributes) { {} }
   let(:role_override_attributes) { {} }
   let(:node) { chef_run.node }
+  let(:policy_group) { 'mygroup' }
   subject do
-    # Apply our attributes
-    node.role_default.update(role_default_attributes)
-    node.role_override.update(role_override_attributes)
     # Set a policy_group. Run this late so our node doesn't get created before
     # all before blocks get a chance to run.
     if defined?(node.policy_group)
-      node.policy_group = 'mygroup'
+      node.policy_group = policy_group
     else
       # Global side effect. ¯\_(ツ)_/¯
-      Chef::Config[:policy_group] = 'mygroup'
+      Chef::Config[:policy_group] = policy_group
     end
+    # Apply our attributes
+    node.role_default.update(role_default_attributes)
+    node.role_override.update(role_override_attributes)
     # Run the hoist.
     PoiseHoist.hoist!(node)
     # Use the attributes as the subject.
@@ -49,6 +50,19 @@ describe PoiseHoist do
     role_override_attributes['baseline'] ||= {}
     role_override_attributes['baseline']['one'] = 11
     role_override_attributes['top'] = 'hat'
+    # Patch data bag item loading to use the fixtures.
+    allow(Chef::DataBagItem).to receive(:load) do |bag, item|
+      if bag != 'hoist'
+        raise Chef::Exceptions::InvalidDataBagItemID.new("No bag found for #{bag}/#{item}")
+      end
+      path = File.expand_path("../fixtures/#{item}.json", __FILE__)
+      unless File.exist?(path)
+        raise Chef::Exceptions::InvalidDataBagItemID.new("No item found for #{bag}/#{item} at #{path}")
+      end
+      obj = Chef::DataBagItem.from_hash(JSON.parse(IO.read(path)))
+      obj.data_bag(bag)
+      obj
+    end
   end
 
   context 'with no policy attributes' do
@@ -126,6 +140,51 @@ describe PoiseHoist do
     its(%w{baseline deep four}) { is_expected.to eq [4] }
     its(%w{top}) { is_expected.to eq 'dog' }
   end # /context with a top-level override policy attribute
+
+  context 'with a data bag' do
+    before { override_attributes['poise-hoist'] = {'data_bag' => 'hoist'} }
+    its(%w{baseline one}) { is_expected.to eq 1111 }
+    its(%w{baseline two}) { is_expected.to eq 2 }
+    its(%w{baseline deep three}) { is_expected.to eq 3 }
+    its(%w{baseline deep four}) { is_expected.to eq [4] }
+    its(%w{top}) { is_expected.to eq 'flight' }
+  end # /context with a data bag
+
+  context 'with a data bag for the node name' do
+    before do
+      override_attributes['poise-hoist'] = {'data_bag' => 'hoist'}
+      node.name('test-node')
+    end
+    its(%w{baseline one}) { is_expected.to eq 11111 }
+    its(%w{baseline two}) { is_expected.to eq 22222 }
+    its(%w{baseline deep three}) { is_expected.to eq 3 }
+    its(%w{baseline deep four}) { is_expected.to eq [44444] }
+    its(%w{top}) { is_expected.to eq 'hat' }
+  end # /context with a data bag for the node name
+
+  context 'with a data bag that does not exist' do
+    before { override_attributes['poise-hoist'] = {'data_bag' => 'notfound'} }
+    it { expect { subject }.to raise_error Chef::Exceptions::InvalidDataBagItemID }
+  end # /context with a data bag that does not exist
+
+  context 'with a data bag that does not match the policy group' do
+    let(:policy_group) { 'othergroup' }
+    before { override_attributes['poise-hoist'] = {'data_bag' => 'hoist'} }
+    it { expect { subject }.to raise_error Chef::Exceptions::InvalidDataBagItemID }
+  end # /context with a data bag that does not match the policy group
+
+  context 'with an encrypted data bag' do
+    before do
+      Chef::Config[:encrypted_data_bag_secret] = File.expand_path('../fixtures/key', __FILE__)
+      override_attributes['poise-hoist'] = {'data_bag' => 'hoist'}
+      node.name('encrypted-node')
+    end
+    its(%w{baseline one}) { is_expected.to eq 11111 }
+    its(%w{baseline two}) { is_expected.to eq 22222 }
+    its(%w{baseline deep three}) { is_expected.to eq 3 }
+    its(%w{baseline deep four}) { is_expected.to eq [44444] }
+    its(%w{top}) { is_expected.to eq 'hat' }
+  end # /context with an encrypted data bag
 
   describe 'patch_chef_environment!' do
     context 'with patching enabled (default)' do

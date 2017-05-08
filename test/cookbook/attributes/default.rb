@@ -17,3 +17,4 @@
 default['hoist_test']['one'] = 1
 default['hoist_test']['two'] = 2
 default['hoist_test']['three'] = 3
+default['hoist_test']['four'] = 4

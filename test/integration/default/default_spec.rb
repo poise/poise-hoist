@@ -15,7 +15,7 @@
 #
 
 describe file('/hoist_test') do
-  its(:content) { is_expected.to eq '{"one":11,"two":222,"three":3}' }
+  its(:content) { is_expected.to eq '{"one":11,"two":222,"three":3,"four":44}' }
 end
 
 describe file('/hoist_environment') do

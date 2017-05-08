@@ -1,0 +1,10 @@
+{
+  "id": "test-node",
+  "baseline": {
+    "one": 11111,
+    "two": 22222,
+    "deep": {
+      "four": [44444]
+    }
+  }
+}
