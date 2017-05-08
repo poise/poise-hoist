@@ -62,6 +62,15 @@ For older cookbooks still expecting to use `node.chef_environment`, by default
 that method will be patched to return the policy group label instead. This can
 be disabled by setting `node['poise-hoist']['hoist_chef_environment'] = false`.
 
+## Data Bag Attributes
+
+To pull in data from a data bag, set `node['poise-hoist']['data_bag']`, in your
+Policyfile or in a wrapper cookbook. It will look for an item in the specified
+data bag using the name of the node and then the name of policy group.
+
+This can be useful in combination with attributes from the Policyfile to provide
+immediate overrides outside of the "compile and push" cycle of the policy system.
+
 ## Sponsors
 
 Development sponsored by [Bloomberg](http://www.bloomberg.com/company/technology/).
