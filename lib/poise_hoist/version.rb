@@ -17,5 +17,5 @@
 
 module PoiseHoist
   # Version for the poise-hoist gem.
-  VERSION = '1.2.0'
+  VERSION = '1.2.1.pre'
 end
